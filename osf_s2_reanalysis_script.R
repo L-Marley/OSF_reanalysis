@@ -45,6 +45,18 @@ recall_mod <- lme(recall ~ scenario, random = ~ 1|cue_word, data = recall_dat, m
 summary(recall_mod)
 
 # Inferential Statistics - Bayes Factors
+
+levels(rating_dat$cue_word)
+rating_dat$cue_word <- as.character(rating_dat$cue_word)
+rating_dat$cue_word[1:32] <- as.numeric(1:32)
+rating_dat$cue_word[33:64] <- as.numeric(1:32)
+rating_dat$cue_word <- as.factor(rating_dat$cue_word)
+
+recall_dat$cue_word <- as.character(recall_dat$cue_word)
+recall_dat$cue_word[1:32] <- as.numeric(1:32)
+recall_dat$cue_word[33:64] <- as.numeric(1:32)
+recall_dat$cue_word <- as.factor(recall_dat$cue_word)
+
 ## Ratings BF
 rating_bf <- anovaBF(rating ~ scenario + cue_word, whichRandom = "cue_word", data = rating_dat)
 rating_bf
