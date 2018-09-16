@@ -16,20 +16,20 @@ osf_s2_dat <- rename(osf_s2_dat, cue_word = "Stimuli Word German")
 
 # Go to long format
 ## Ratings Data
-rating_dat <- osf_s2_dat %>% 
+rating_s2dat <- osf_s2_dat %>% 
   select(., cue_word, MeanRating_Survival: MeanRating_Vacation) %>% 
   gather(., key = "scenario", value = "rating", -(cue_word))
 
-rating_dat$scenario <- fct_recode(rating_dat$scenario, survival = "MeanRating_Survival", vacation = "MeanRating_Vacation")
-rating_dat$scenario <- as.factor(rating_dat$scenario)
+rating_s2dat$scenario <- fct_recode(rating_s2dat$scenario, survival = "MeanRating_Survival", vacation = "MeanRating_Vacation")
+rating_s2dat$scenario <- as.factor(rating_s2dat$scenario)
 
 ## Recall Data
-recall_dat <- osf_s2_dat %>% 
+recall_s2dat <- osf_s2_dat %>% 
   select(., cue_word, Mean_Remembered_Survival:Mean_Remembered_Vacation) %>% 
   gather(., key = "scenario", value = "recall", -(cue_word))
 
-recall_dat$scenario <- fct_recode(recall_dat$scenario, survival = "Mean_Remembered_Survival", vacation = "Mean_Remembered_Vacation")
-recall_dat$scenario <- as.factor(recall_dat$scenario)
+recall_s2dat$scenario <- fct_recode(recall_s2dat$scenario, survival = "Mean_Remembered_Survival", vacation = "Mean_Remembered_Vacation")
+recall_s2dat$scenario <- as.factor(recall_s2dat$scenario)
 
 # Inferential Statistics - Multilevel Models
 
@@ -37,30 +37,30 @@ recall_dat$scenario <- as.factor(recall_dat$scenario)
 # within them and as such thet are at level 2
 
 ## Ratings Model
-rating_mod <- lme(rating ~ scenario, random = ~ 1|cue_word, data = rating_dat, method = "REML")
-summary(rating_mod)
+rating_s2mod <- lme(rating ~ scenario, random = ~ 1|cue_word, data = rating_s2dat, method = "REML")
+summary(rating_s2mod)
 
 ## Recall Model
-recall_mod <- lme(recall ~ scenario, random = ~ 1|cue_word, data = recall_dat, method = "REML")
-summary(recall_mod)
+recall_s2mod <- lme(recall ~ scenario, random = ~ 1|cue_word, data = recall_s2dat, method = "REML")
+summary(recall_s2mod)
 
 # Inferential Statistics - Bayes Factors
 
-levels(rating_dat$cue_word)
-rating_dat$cue_word <- as.character(rating_dat$cue_word)
-rating_dat$cue_word[1:32] <- as.numeric(1:32)
-rating_dat$cue_word[33:64] <- as.numeric(1:32)
-rating_dat$cue_word <- as.factor(rating_dat$cue_word)
+levels(rating_s2dat$cue_word)
+rating_s2dat$cue_word <- as.character(rating_s2dat$cue_word)
+rating_s2dat$cue_word[1:32] <- as.numeric(1:32)
+rating_s2dat$cue_word[33:64] <- as.numeric(1:32)
+rating_s2dat$cue_word <- as.factor(rating_s2dat$cue_word)
 
-recall_dat$cue_word <- as.character(recall_dat$cue_word)
-recall_dat$cue_word[1:32] <- as.numeric(1:32)
-recall_dat$cue_word[33:64] <- as.numeric(1:32)
-recall_dat$cue_word <- as.factor(recall_dat$cue_word)
+recall_s2dat$cue_word <- as.character(recall_s2dat$cue_word)
+recall_s2dat$cue_word[1:32] <- as.numeric(1:32)
+recall_s2dat$cue_word[33:64] <- as.numeric(1:32)
+recall_s2dat$cue_word <- as.factor(recall_s2dat$cue_word)
 
 ## Ratings BF
-rating_bf <- anovaBF(rating ~ scenario + cue_word, whichRandom = "cue_word", data = rating_dat)
-rating_bf
+rating_s2bf <- anovaBF(rating ~ scenario + cue_word, whichRandom = "cue_word", data = rating_s2dat)
+rating_s2bf
 
 ## Recall BF
-recall_bf <- anovaBF(recall ~ scenario + cue_word, whichRandom = "cue_word", data = recall_dat)
-recall_bf
+recall_s2bf <- anovaBF(recall ~ scenario + cue_word, whichRandom = "cue_word", data = recall_s2dat)
+recall_s2bf

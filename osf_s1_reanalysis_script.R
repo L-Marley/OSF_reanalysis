@@ -16,48 +16,48 @@ osf_s1_dat$Condition <- as.factor(osf_s1_dat$Condition)
 
 # Go to long format
 ## Ratings Data
-rating_dat <- osf_s1_dat %>%
+rating_s1dat <- osf_s1_dat %>%
   select(., Subject:MeanRating_VacationWords) %>%
   gather(., key = "scenario", value = "rating", -c(Subject, Condition))
 
-rating_dat$scenario <- fct_recode(rating_dat$scenario, survival = "MeanRating_SurvivalWords", vacation = "MeanRating_VacationWords")
+rating_s1dat$scenario <- fct_recode(rating_s1dat$scenario, survival = "MeanRating_SurvivalWords", vacation = "MeanRating_VacationWords")
 
 ## Recall Data
-recall_dat <- osf_s1_dat %>%
+recall_s1dat <- osf_s1_dat %>%
   select(., Subject, Mean_RememberedWords_Survival:Mean_RememberedWords_Vacation) %>%
   gather(., key = "scenario", value = "recall", -(Subject)) 
 
-recall_dat$scenario <- fct_recode(recall_dat$scenario, survival = "Mean_RememberedWords_Survival", vacation = "Mean_RememberedWords_Vacation")
+recall_s1dat$scenario <- fct_recode(recall_s1dat$scenario, survival = "Mean_RememberedWords_Survival", vacation = "Mean_RememberedWords_Vacation")
 
 ## Reaction Time Data
-RT_dat <- osf_s1_dat %>% 
+RT_s1dat <- osf_s1_dat %>% 
   select(., Subject, ResponseTime_Survival:ResponseTime_Vacation) %>% 
   gather(., key = "scenario", value = "RT", -(Subject))
 
-RT_dat$scenario <- fct_recode(RT_dat$scenario, survival = "ResponseTime_Survival", vacation = "ResponseTime_Vacation")
+RT_s1dat$scenario <- fct_recode(RT_s1dat$scenario, survival = "ResponseTime_Survival", vacation = "ResponseTime_Vacation")
 
 # Inferential Statistics - Multilevel Models
 ## Ratings Model
-rating_mod <- lme(rating ~ scenario, random = ~ 1|Subject, data = rating_dat, method = "REML")
-summary(rating_mod)
+rating_s1mod <- lme(rating ~ scenario, random = ~ 1|Subject, data = rating_s1dat, method = "REML")
+summary(rating_s1mod)
 
 ## Recall Model
-recall_mod <- lme(recall ~ scenario, random = ~ 1|Subject, data = recall_dat, method = "REML")
-summary(recall_mod)
+recall_s1mod <- lme(recall ~ scenario, random = ~ 1|Subject, data = recall_s1dat, method = "REML")
+summary(recall_s1mod)
 
 ## RT Model
-RT_mod <- lme(RT ~ scenario, random =  ~1|Subject, data = RT_dat, method = "REML")
-summary(RT_mod)
+RT_s1mod <- lme(RT ~ scenario, random =  ~1|Subject, data = RT_s1dat, method = "REML")
+summary(RT_s1mod)
 
 # Inferential Statistics - Bayes Factors
 ## Ratings BF
-rating_bf <- anovaBF(rating ~ scenario + Subject, whichRandom = "Subject", data = rating_dat)
-rating_bf
+rating_s1bf <- anovaBF(rating ~ scenario + Subject, whichRandom = "Subject", data = rating_s1dat)
+rating_s1bf
 
 ## Recall BF
-recall_bf <- anovaBF(recall ~ scenario + Subject, whichRandom = "Subject", data = recall_dat)
-recall_bf
+recall_s1bf <- anovaBF(recall ~ scenario + Subject, whichRandom = "Subject", data = recall_s1dat)
+recall_s1bf
 
 ## RT BF
-RT_bf <- anovaBF(RT ~ scenario + Subject, whichRandom = "Subject", data = RT_dat)
-RT_bf
+RT_s1bf <- anovaBF(RT ~ scenario + Subject, whichRandom = "Subject", data = RT_s1dat)
+RT_s1bf
