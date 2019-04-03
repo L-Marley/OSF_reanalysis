@@ -6,3 +6,4 @@ The only requirements are that you have R and RStudio installed and either run t
 
 # Data
 Direct files are not provided as these are available from the OSF and the script retrieves them from there. 
+a line from a new computer testing git set-up
